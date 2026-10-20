@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>스마트 미디어 과의존 척도 검사</title>
+<style>
+:root{--blue:#1E5CB3;--red:#EE294A;--line:#e7ebf0;--text:#20242a;--muted:#69707d}
+*{box-sizing:border-box} body{margin:0;background:#f4f6f9;font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;color:var(--text)}
+.wrap{width:min(1120px,94%);margin:34px auto} .card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 14px 40px rgba(30,50,80,.1)}
+.brand{display:flex;justify-content:space-between;align-items:center;padding:20px 30px;border-bottom:1px solid var(--line)} .brand img{height:44px}
+.accent{width:118px;height:7px;border-radius:99px;background:linear-gradient(90deg,var(--red) 0 50%,var(--blue) 50%)}
+.hero{padding:34px 36px 26px;background:linear-gradient(135deg,rgba(30,92,179,.08),rgba(238,41,74,.03))}
+.kicker{font-size:13px;font-weight:800;color:var(--blue);margin-bottom:8px} h1{margin:0 0 10px;font-size:34px;letter-spacing:-.03em} .hero p{margin:0;color:#5f6773}
+.progressbox{padding:18px 36px 20px;border-bottom:1px solid var(--line)} .ptop{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px}
+.track{height:9px;background:#edf0f5;border-radius:99px;overflow:hidden} #bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--red));transition:.2s}
+table{width:100%;border-collapse:collapse;min-width:900px} th,td{border-bottom:1px solid var(--line);padding:15px 12px;text-align:center} th{background:#fbfcfe;font-size:13px} .q{text-align:left;min-width:470px;padding-left:26px} .q b{display:inline-grid;place-items:center;width:34px;height:28px;margin-right:8px;border-radius:8px;background:rgba(30,92,179,.09);color:var(--blue);font-size:13px}
+input[type=radio]{appearance:none;width:21px;height:21px;border:2px solid #b9c0cc;border-radius:50%;cursor:pointer} input[type=radio]:checked{border-color:var(--blue);background:var(--blue);box-shadow:inset 0 0 0 4px white}
+td label span{display:none} tr.answered{background:rgba(30,92,179,.035)}
+.actions{padding:28px 36px 32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap} button{border:0;border-radius:13px;padding:14px 24px;min-width:150px;font-weight:800;cursor:pointer} .primary{background:var(--blue);color:#fff} .secondary{background:#eef1f6}
+.note{padding:0 36px 16px;text-align:center;color:#7b8491;font-size:12.5px}.source{padding:0 36px 28px;text-align:center;color:#9aa1ab;font-size:11px}
+#resultPage{display:none;padding:42px 36px 46px} #resultPage.show{display:block} #surveyPage.hide{display:none}
+.resultHead{text-align:center} .score{width:180px;height:180px;margin:24px auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--blue) var(--angle,0deg),#edf0f5 0);position:relative}
+.score:after{content:"";position:absolute;inset:12px;background:white;border-radius:50%} .scorein{position:relative;z-index:1;text-align:center} #scoreValue{font-size:42px;font-weight:900;color:var(--blue)} .box{width:min(760px,100%);margin:auto;border:1px solid #dfe5ee;border-radius:18px;padding:24px 26px;background:#fbfcff}
+.badge{display:inline-block;padding:7px 12px;border-radius:99px;background:rgba(238,41,74,.08);color:var(--red);font-weight:900} .box h3{font-size:23px;margin:12px 0 8px} .box p{margin:0;color:#555f6b}
+.guide{width:min(760px,100%);margin:18px auto 0;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:15px;overflow:hidden} .guide div{padding:14px 10px;text-align:center;border-right:1px solid var(--line)} .guide div:last-child{border-right:0} .guide strong,.guide span{display:block} .guide span{font-size:12px;color:#808895;margin-top:3px}
+@media(max-width:760px){
+.wrap{width:100%;margin:0}.card{border-radius:0;min-height:100vh}.brand{padding:16px 18px}.brand img{height:38px}.hero{padding:28px 20px 20px}.progressbox{padding:15px 20px 18px}
+.tablewrap{padding:8px 15px} table,thead,tbody,tr,td{display:block;min-width:0;width:100%} thead{display:none} tr{margin:12px 0;border:1px solid var(--line);border-radius:16px;padding:16px} .q{padding:0 0 15px}
+td:not(.q){display:inline-flex;width:24%;border:0;justify-content:center} td label{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11px;color:#68707d;text-align:center} td label span{display:block}
+.guide{grid-template-columns:1fr} .guide div{border-right:0;border-bottom:1px solid var(--line)} .guide div:last-child{border-bottom:0} #resultPage{padding:34px 20px 38px}
+}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<div class="brand"><img src="data:image/png;base64,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" alt="YBM 와이비엠"><div class="accent"></div></div>
+
+<section id="surveyPage">
+<div class="hero"><div class="kicker">SELF CHECK</div><h1>스마트 미디어 과의존 척도 검사</h1>
+<p>각 문장을 읽고 현재 자신의 모습과 가장 가까운 응답을 선택하세요. 모든 문항에 응답하면 다음 화면에서 총점과 결과 해석을 확인할 수 있습니다.</p></div>
+<div class="progressbox"><div class="ptop"><span>응답 진행률</span><strong><span id="count">0</span> / 10</strong></div><div class="track"><div id="bar"></div></div></div>
+<form id="form"><div class="tablewrap"><table>
+<thead><tr><th>측정 내용</th><th>전혀 그렇지 않다<br>(1점)</th><th>그렇지 않다<br>(2점)</th><th>그렇다<br>(3점)</th><th>매우 그렇다<br>(4점)</th></tr></thead>
+<tbody><tr data-row="1"><td class="q"><b>01</b>스마트폰 이용 시간을 줄이려 할 때마다 실패한다.</td><td><label><input type="radio" name="q1" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q1" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q1" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q1" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="2"><td class="q"><b>02</b>스마트폰 이용 시간을 조절하는 것이 어렵다.</td><td><label><input type="radio" name="q2" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q2" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q2" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q2" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="3"><td class="q"><b>03</b>적절한 스마트폰 이용 시간을 지키는 것이 어렵다.</td><td><label><input type="radio" name="q3" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q3" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q3" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q3" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="4"><td class="q"><b>04</b>스마트폰이 옆에 있으면 다른 일에 집중하기 어렵다.</td><td><label><input type="radio" name="q4" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q4" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q4" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q4" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="5"><td class="q"><b>05</b>스마트폰 생각이 머리에서 떠나지 않는다.</td><td><label><input type="radio" name="q5" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q5" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q5" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q5" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="6"><td class="q"><b>06</b>스마트폰을 이용하고 싶은 충동을 강하게 느낀다.</td><td><label><input type="radio" name="q6" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q6" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q6" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q6" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="7"><td class="q"><b>07</b>스마트폰 이용 때문에 건강에 문제가 생긴 적이 있다.</td><td><label><input type="radio" name="q7" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q7" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q7" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q7" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="8"><td class="q"><b>08</b>스마트폰 이용 때문에 가족과 심하게 다툰 적이 있다.</td><td><label><input type="radio" name="q8" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q8" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q8" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q8" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="9"><td class="q"><b>09</b>스마트폰 이용 때문에 친구 혹은 사회적 관계에서 심한 갈등을 경험한 적이 있다.</td><td><label><input type="radio" name="q9" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q9" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q9" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q9" value="4"><span>매우 그렇다</span></label></td></tr>
+<tr data-row="10"><td class="q"><b>10</b>스마트폰 때문에 업무(학업 혹은 직업 등) 수행에 어려움이 있다.</td><td><label><input type="radio" name="q10" value="1"><span>전혀 그렇지 않다</span></label></td><td><label><input type="radio" name="q10" value="2"><span>그렇지 않다</span></label></td><td><label><input type="radio" name="q10" value="3"><span>그렇다</span></label></td><td><label><input type="radio" name="q10" value="4"><span>매우 그렇다</span></label></td></tr></tbody>
+</table></div>
+<div class="actions"><button type="button" class="primary" onclick="showResult()">결과 확인</button><button type="reset" class="secondary" onclick="resetForm()">다시 작성</button></div></form>
+<div class="note">※ 본 검사는 자기 점검을 위한 참고 자료입니다.</div><div class="source">[출처] 한국지능정보사회진흥원</div>
+</section>
+
+<section id="resultPage">
+<div class="resultHead"><div class="kicker">RESULT</div><h2>검사 결과</h2><p>응답한 10개 문항의 점수를 합산한 결과입니다.</p></div>
+<div class="score" id="scoreRing"><div class="scorein"><div id="scoreValue">0</div><div>/ 40점</div></div></div>
+<div class="box"><span class="badge" id="group"></span><h3 id="title"></h3><p id="desc"></p></div>
+<div class="guide"><div><strong>일반 사용자군</strong><span>22점 이하</span></div><div><strong>잠재적 위험군</strong><span>22~30점</span></div><div><strong>고위험군</strong><span>31점 이상</span></div></div>
+<div class="actions"><button class="primary" onclick="back()">응답 다시 보기</button><button class="secondary" onclick="restart()">처음부터 다시 검사</button></div>
+<div class="note">※ 제공해 주신 해석 기준에서 22점이 두 구간에 중복됩니다. 이 파일에서는 22점을 ‘잠재적 위험군’으로 우선 분류했습니다.</div><div class="source">[출처] 한국지능정보사회진흥원</div>
+</section>
+
+</div></div>
+<script>
+document.querySelectorAll('input[type=radio]').forEach(x=>x.addEventListener('change',update));
+function update(){
+ let n=0;
+ for(let i=1;i<=10;i++){const c=document.querySelector(`input[name=q${i}]:checked`),r=document.querySelector(`tr[data-row="${i}"]`); if(c){n++;r.classList.add('answered')}else r.classList.remove('answered')}
+ document.getElementById('count').textContent=n; document.getElementById('bar').style.width=(n*10)+'%';
+}
+function showResult(){
+ let t=0;
+ for(let i=1;i<=10;i++){let c=document.querySelector(`input[name=q${i}]:checked`); if(!c){alert(i+'번 문항에 응답해 주세요.');document.querySelector(`tr[data-row="${i}"]`).scrollIntoView({behavior:'smooth',block:'center'});return} t+=Number(c.value)}
+ let g,title,desc;
+ if(t>=31){g='고위험군';title='스마트 미디어 과의존 경향성이 매우 높습니다.';desc='스마트 미디어 과의존 경향성이 매우 높으므로 전문 기관의 지원과 도움이 필요합니다.'}
+ else if(t>=22){g='잠재적 위험군';title='스마트 미디어 사용에 주의가 필요합니다.';desc='스마트 미디어 과의존에 대한 위험을 깨닫고, 스스로 조절하고 계획적으로 사용하도록 주의와 노력이 필요합니다.'}
+ else{g='일반 사용자군';title='현재는 일반 사용자군에 해당합니다.';desc='스마트 미디어를 건전하게 활용하기 위해 지속적으로 자기 점검이 필요합니다.'}
+ scoreValue.textContent=t; group.textContent=g; document.getElementById('title').textContent=title; document.getElementById('desc').textContent=desc;
+ scoreRing.style.setProperty('--angle',Math.max(0,Math.min(1,(t-10)/30))*360+'deg');
+ surveyPage.classList.add('hide'); resultPage.classList.add('show'); window.scrollTo({top:0,behavior:'smooth'});
+}
+function back(){resultPage.classList.remove('show');surveyPage.classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'})}
+function restart(){document.getElementById('form').reset();update();back()}
+function resetForm(){setTimeout(update,0)}
+</script>
+</body></html>
